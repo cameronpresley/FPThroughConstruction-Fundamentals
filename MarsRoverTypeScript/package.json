@@ -1,0 +1,29 @@
+{
+  "name": "marsrovertypescript",
+  "version": "1.0.0",
+  "description": "TypeScript library for implementing MarsRover",
+  "main": "index.js",
+  "scripts": {
+    "start": "ts-node src/index.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cameronpresley/FPThroughConstruction-Fundamentals.git"
+  },
+  "author": "Cameron Presley",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/cameronpresley/FPThroughConstruction-Fundamentals/issues"
+  },
+  "homepage": "https://github.com/cameronpresley/FPThroughConstruction-Fundamentals#readme",
+  "dependencies": {
+    "@types/node": "^12.7.12",
+    "eslint": "^6.5.1",
+    "jest": "^24.9.0",
+    "readline": "^1.3.0",
+    "ts-jest": "^24.1.0",
+    "ts-node": "^8.4.1",
+    "typescript": "^3.6.3"
+  }
+}
