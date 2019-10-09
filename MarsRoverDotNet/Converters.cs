@@ -29,5 +29,7 @@ namespace MarsRoverDotNet
                 default: return RoverCommands.Unknown;
             }
         }
+
+        public static string ConvertRoverToString(Rover r) => $"(X:{r.X}, Y:{r.Y}) facing {r.Direction}";
     }
 }
