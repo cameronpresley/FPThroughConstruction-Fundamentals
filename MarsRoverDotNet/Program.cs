@@ -45,13 +45,22 @@ namespace MarsRoverDotNet
 
             Func<Rover, Rover> id = r => r;
 
+            // Works, but involves iterating the list 4 times!
             var finalRover =
                 input
                 .Select(x => x.ToString())
                 .Select(Converters.ConvertStringToCommand)
                 .Select(Converters.ConvertCommandToAction)
-                .Aggregate(id, (a, b) => (r) => b(a(r)))
+                .Aggregate(id, Utilities.Compose)
                 .Invoke(rover);
+
+            Func<char, string> toString = c => c.ToString();
+            Func<char, Func<Rover, Rover>> fullComposed =  toString
+                                                            .Compose(Converters.ConvertStringToCommand)
+                                                            .Compose(Converters.ConvertCommandToAction);
+            finalRover = input
+                            .Select(fullComposed)
+                            .Aggregate(id, Utilities.Compose).Invoke(rover);
 
             System.Console.WriteLine($"Rover's final location {Converters.ConvertRoverToString(finalRover)}");
         }
