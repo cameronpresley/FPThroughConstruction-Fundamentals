@@ -13,7 +13,9 @@
       "object-literal-key-quotes": {
         "options": "as-needed"
       },
-      "no-require-imports": true
+      "no-console": [false, "log"],
+      "no-require-imports": true,
+      "interface-name": [true, "never-prefix"]
     },
     "rulesDirectory": []
   }
