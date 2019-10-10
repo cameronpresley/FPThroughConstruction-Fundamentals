@@ -1,5 +1,5 @@
-import * as readline from "readline";
-const kumquats = readline.createInterface({
+import {createInterface} from "readline";
+const readline = createInterface({
     input: process.stdin,
     output: process.stdout,
   });
@@ -87,15 +87,15 @@ const displayPrompt = (r: Rover) => {
 };
 
 displayPrompt(newRover);
-kumquats.prompt();
-kumquats.on("line", (line: string) => {
+readline.prompt();
+readline.on("line", (line: string) => {
     command = stringToCommand(line);
     newRover = commandToFunction(command)(newRover);
     if (command === "Quit") {
-        kumquats.close();
+        readline.close();
     } else {
       displayPrompt(newRover);
-      kumquats.prompt();
+      readline.prompt();
     }
 }).on("close", () => {
     process.exit(0);
