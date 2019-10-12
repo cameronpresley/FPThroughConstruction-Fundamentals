@@ -25,8 +25,8 @@ namespace MarsRoverDotNet
                 case Command.MoveBackward: return RoverCommands.MoveBackward;
                 case Command.TurnLeft: return RoverCommands.TurnLeft;
                 case Command.TurnRight: return RoverCommands.TurnRight;
-                case Command.Quit: return RoverCommands.Quit;
-                default: return RoverCommands.Unknown;
+                case Command.Quit: return RoverCommands.DoNothing;
+                default: return RoverCommands.DoNothing;
             }
         }
 

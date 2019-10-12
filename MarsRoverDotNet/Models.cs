@@ -1,18 +1,22 @@
 namespace MarsRoverDotNet
 {
-    public enum Direction 
+    public enum Command
     {
-        North,
-        South,
-        East,
-        West,
+        MoveForward, MoveBackward, TurnLeft,
+        TurnRight, Quit,
+        Unknown,
+    }
+
+    public enum Direction
+    {
+        North, South, East, West,
     }
 
     public class Rover
     {
-        public int X {get;}
-        public int Y {get;}
-        public Direction Direction {get;}
+        public int X { get; }
+        public int Y { get; }
+        public Direction Direction { get; }
 
         public Rover(int x, int y, Direction direction)
         {
@@ -20,15 +24,5 @@ namespace MarsRoverDotNet
             Y = y;
             Direction = direction;
         }
-    }
-
-    public enum Command
-    {
-        MoveForward,
-        MoveBackward,
-        TurnLeft,
-        TurnRight,
-        Quit,
-        Unknown
     }
 }

@@ -68,9 +68,6 @@ namespace MarsRoverDotNet
                     return r;
             }
         }
-
-        public static Rover Quit(Rover r) => r;
-        public static Rover Unknown(Rover r) => r;
-
+        public static Rover DoNothing (Rover r) => r;
     }
 }
