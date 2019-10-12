@@ -1,24 +1,24 @@
-import {createInterface} from "readline";
+import { createInterface } from "readline";
 const readline = createInterface({
     input: process.stdin,
     output: process.stdout,
-  });
+});
 
 type Func<T, U> = (x: T) => U;
 
 const compose = <T1, T2, T3>(a: Func<T1, T2>, b: Func<T2, T3>) => ((x: T1) => b(a(x))) as Func<T1, T3>;
 
 type Direction = "North"
-               | "South"
-               | "East"
-               | "West";
+    | "South"
+    | "East"
+    | "West";
 
 type Command = "MoveForward"
-             | "MoveBackward"
-             | "TurnLeft"
-             | "TurnRight"
-             | "Quit"
-             | "Unknown";
+    | "MoveBackward"
+    | "TurnLeft"
+    | "TurnRight"
+    | "Quit"
+    | "Unknown";
 
 interface Rover {
     x: number;
@@ -46,19 +46,19 @@ const turnRight: Func<Rover, Rover> = (r) => {
 
 const moveForward: Func<Rover, Rover> = (r) => {
     switch (r.direction) {
-      case "North": return { ...r, y: r.y + 1 };
-      case "South": return { ...r, y: r.y - 1 };
-      case "East": return { ...r, x: r.x + 1 };
-      case "West": return { ...r, x: r.x - 1 };
+        case "North": return { ...r, y: r.y + 1 };
+        case "South": return { ...r, y: r.y - 1 };
+        case "East": return { ...r, x: r.x + 1 };
+        case "West": return { ...r, x: r.x - 1 };
     }
 };
 
 const moveBackward: Func<Rover, Rover> = (r) => {
     switch (r.direction) {
-      case "North": return { ...r, y: r.y - 1 };
-      case "South": return { ...r, y: r.y + 1 };
-      case "East": return { ...r, x: r.x - 1 };
-      case "West": return { ...r, x: r.x + 1 };
+        case "North": return { ...r, y: r.y - 1 };
+        case "South": return { ...r, y: r.y + 1 };
+        case "East": return { ...r, x: r.x - 1 };
+        case "West": return { ...r, x: r.x + 1 };
     }
 };
 
@@ -66,23 +66,23 @@ const doNothing: Func<Rover, Rover> = (r) => r;
 
 const stringToCommand = (s: string): Command => {
     switch (s.toLowerCase()) {
-      case "f": return "MoveForward";
-      case "b": return "MoveBackward";
-      case "l": return "TurnLeft";
-      case "r": return "TurnRight";
-      case "q": return "Quit";
-      default: return "Unknown";
+        case "f": return "MoveForward";
+        case "b": return "MoveBackward";
+        case "l": return "TurnLeft";
+        case "r": return "TurnRight";
+        case "q": return "Quit";
+        default: return "Unknown";
     }
 };
 
 const commandToAction = (c: Command): Func<Rover, Rover> => {
     switch (c) {
-      case "MoveBackward": return moveBackward;
-      case "MoveForward": return moveForward;
-      case "TurnLeft": return turnLeft;
-      case "TurnRight": return turnRight;
-      case "Quit": return doNothing;
-      case "Unknown": return doNothing;
+        case "MoveBackward": return moveBackward;
+        case "MoveForward": return moveForward;
+        case "TurnLeft": return turnLeft;
+        case "TurnRight": return turnRight;
+        case "Quit": return doNothing;
+        case "Unknown": return doNothing;
     }
 };
 
@@ -112,33 +112,43 @@ const runInteractive = (r: Rover) => {
     displayPrompt(rover);
     readline.prompt();
     readline.on("line", (line: string) => {
-    command = stringToCommand(line);
-    rover = commandToAction(command)(rover);
-    if (command === "Quit") {
-        readline.close();
-    } else {
-      displayPrompt(rover);
-      readline.prompt();
-    }
-}).on("close", () => {
-    process.exit(0);
-});
+        command = stringToCommand(line);
+        rover = commandToAction(command)(rover);
+        if (command === "Quit") {
+            readline.close();
+        } else {
+            displayPrompt(rover);
+            readline.prompt();
+        }
+    }).on("close", () => {
+        process.exit(0);
+    });
 };
 
-const runStringOfCommands = (r: Rover) => {
-    const stringToAction = compose(stringToCommand, commandToAction);
+const runStringOfCommands = (rover: Rover) => {
     console.log("What are the commands to process?");
     readline.prompt();
     readline.on("line", (line: string) => {
-      const newR =
-        [... line]
-        .map(stringToAction)
-        .reduce(compose, doNothing)
-        (r);
-      console.log(newR);
-      readline.close();
+        let newR: Rover;
+        // worst way (3 iterations)
+        newR = [...line]
+            .map(stringToCommand)
+            .map(commandToAction)
+            .reduce((r, f) => f(r), rover);
+
+        // Better way (2 iterations)
+        const stringToAction = compose(stringToCommand, commandToAction);
+        newR = [...line]
+            .map(stringToAction)
+            .reduce((r, f) => f(r), rover);
+
+        // Best way (1 iteration)
+        newR = [...line].reduce((r, c) => stringToAction(c)(r), rover);
+
+        console.log(newR);
+        readline.close();
     })
-    .on("close", () => {
-        process.exit(0);
-    });
+        .on("close", () => {
+            process.exit(0);
+        });
 };

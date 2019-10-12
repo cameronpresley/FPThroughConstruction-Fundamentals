@@ -24,14 +24,15 @@ namespace MarsRoverDotNet
             }
         }
 
-        private static void InteractiveMode(Rover rover)
+        private static void InteractiveMode(Rover r)
         {
+            Rover rover = r;
             Command command = Command.Unknown;
             while (command != Command.Quit)
             {
-                System.Console.WriteLine($"Rover's current location {Converters.ConvertRoverToString(rover)}");
-                System.Console.WriteLine("What command to run?");
-                System.Console.WriteLine("Move (F)orward, Move (B)ackward, Turn (L)eft, Turn (R)ight, (Q)uit");
+                Console.WriteLine($"Rover's current location {Converters.ConvertRoverToString(rover)}");
+                Console.WriteLine("What command to run?");
+                Console.WriteLine("Move (F)orward, Move (B)ackward, Turn (L)eft, Turn (R)ight, (Q)uit");
                 command = Converters.ConvertStringToCommand(Console.ReadLine());
                 rover = Converters.ConvertCommandToAction(command).Invoke(rover);
             }
@@ -41,28 +42,28 @@ namespace MarsRoverDotNet
         {
             Console.WriteLine("What's the string of commands to process?");
             var input = Console.ReadLine();
-            System.Console.WriteLine($"Rover's current location {Converters.ConvertRoverToString(rover)}");
+            Console.WriteLine($"Rover's current location {Converters.ConvertRoverToString(rover)}");
 
-            Func<Rover, Rover> id = r => r;
+            Rover finalRover;
+            
+            // Worst way to process (4 iterations)
+            finalRover = input
+                            .Select(x=>x.ToString())
+                            .Select(Converters.ConvertStringToCommand)
+                            .Select(Converters.ConvertCommandToAction)
+                            .Aggregate(rover, (r, f) => f(r));
 
-            // Works, but involves iterating the list 4 times!
-            var finalRover =
-                input
-                .Select(x => x.ToString())
-                .Select(Converters.ConvertStringToCommand)
-                .Select(Converters.ConvertCommandToAction)
-                .Aggregate(id, Utilities.Compose)
-                .Invoke(rover);
-
+            // Better way to process (2 iterations!)
             Func<char, string> toString = c => c.ToString();
-            Func<char, Func<Rover, Rover>> fullComposed =  toString
+            Func<char, Func<Rover, Rover>> charToAction = toString
                                                             .Compose(Converters.ConvertStringToCommand)
                                                             .Compose(Converters.ConvertCommandToAction);
-            finalRover = input
-                            .Select(fullComposed)
-                            .Aggregate(id, Utilities.Compose).Invoke(rover);
+            finalRover = input.Select(charToAction).Aggregate(rover, (r, f) => f(r));
 
-            System.Console.WriteLine($"Rover's final location {Converters.ConvertRoverToString(finalRover)}");
+            // Best way (1 iteration)
+            finalRover = input.Aggregate(rover, (r, c) => charToAction(c).Invoke(r));
+
+            Console.WriteLine($"Rover's final location {Converters.ConvertRoverToString(finalRover)}");
         }
     }
 }

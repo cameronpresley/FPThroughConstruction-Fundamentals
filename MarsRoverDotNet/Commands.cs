@@ -1,5 +1,3 @@
-using System;
-
 namespace MarsRoverDotNet
 {
     public static class RoverCommands
@@ -20,6 +18,7 @@ namespace MarsRoverDotNet
                     return r;
             }
         }
+        
         public static Rover MoveBackward(Rover r)
         {
             switch (r.Direction)
