@@ -10,7 +10,7 @@ namespace MarsRoverDotNet.UnitTests.CommandTests
     [TestCase(Direction.West, Direction.South, Description="AndFacingWestThenRoverIsFacingSouth")]
     [TestCase(Direction.South, Direction.East, Description="AndFacingSouthThenRoverIsFacingEast")]
     [TestCase(Direction.East, Direction.North, Description="AndFacingEastThenRoverIsFacingNorth")]
-    public void AndTheRoverIsFacingNorthThenTheYDecreasesByOne(Direction start, Direction end)
+    public void ThenTheRoverIsFacingTheCorrectDirection(Direction start, Direction end)
     {
       var rover = new Rover(0, 0, start);
       var newRover = RoverCommands.TurnLeft(rover);
