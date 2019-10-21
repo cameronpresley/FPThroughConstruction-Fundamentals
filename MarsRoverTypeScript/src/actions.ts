@@ -40,4 +40,5 @@ const moveBackward: Action = (r) => {
 };
 
 const doNothing: Action = (r) => r;
+
 export {moveForward, moveBackward, turnLeft, turnRight, doNothing, Action};
