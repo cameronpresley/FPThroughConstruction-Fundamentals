@@ -1,5 +1,5 @@
-import { moveForward, moveBackward } from "./actions";
-import { Rover } from "./models";
+import { moveBackward, moveForward, turnLeft, turnRight } from "./actions";
+import { Direction, Rover } from "./models";
 
 describe("When moving forward", () => {
   it("and facing north, then y increases by one", () => {
@@ -61,4 +61,26 @@ describe("When moving backward", () => {
     expect(newR.direction).toBe(r.direction);
     expect(newR.y).toBe(r.y);
   });
+});
+
+describe("When turning left", () => {
+  it.each([["North", "West"], ["West", "South"], ["South", "East"], ["East", "North"]])(
+    `and facing %s then the rover is facing %s`, (start: Direction, end: Direction) => {
+      const r: Rover = { x: 0, y: 0, direction: start };
+      const newR = turnLeft(r);
+      expect(newR.x).toBe(r.x);
+      expect(newR.y).toBe(r.y);
+      expect(newR.direction).toBe(end);
+    });
+});
+
+describe("When turning right", () => {
+  it.each([["North", "East"], ["East", "South"], ["South", "West"], ["West", "North"]])(
+    `and facing %s then the rover is facing %s`, (start: Direction, end: Direction) => {
+      const r: Rover = { x: 0, y: 0, direction: start };
+      const newR = turnRight(r);
+      expect(newR.x).toBe(r.x);
+      expect(newR.y).toBe(r.y);
+      expect(newR.direction).toBe(end);
+    });
 });
