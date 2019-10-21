@@ -1,0 +1,1 @@
+export const sum = (...a: number[]) => a.reduce((a:number, b:number)=>a+b, 0);

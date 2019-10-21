@@ -4,65 +4,9 @@ const readline = createInterface({
     output: process.stdout,
 });
 
-type Func<T, U> = (x: T) => U;
-
-const compose = <T1, T2, T3>(a: Func<T1, T2>, b: Func<T2, T3>) => ((x: T1) => b(a(x))) as Func<T1, T3>;
-
-type Direction = "North"
-    | "South"
-    | "East"
-    | "West";
-
-type Command = "MoveForward"
-    | "MoveBackward"
-    | "TurnLeft"
-    | "TurnRight"
-    | "Quit"
-    | "Unknown";
-
-interface Rover {
-    x: number;
-    y: number;
-    direction: Direction;
-}
-
-const turnLeft: Func<Rover, Rover> = (r) => {
-    switch (r.direction) {
-        case "North": return { ...r, direction: "West" };
-        case "West": return { ...r, direction: "South" };
-        case "South": return { ...r, direction: "East" };
-        case "East": return { ...r, direction: "North" };
-    }
-};
-
-const turnRight: Func<Rover, Rover> = (r) => {
-    switch (r.direction) {
-        case "North": return { ...r, direction: "East" };
-        case "East": return { ...r, direction: "South" };
-        case "South": return { ...r, direction: "West" };
-        case "West": return { ...r, direction: "North" };
-    }
-};
-
-const moveForward: Func<Rover, Rover> = (r) => {
-    switch (r.direction) {
-        case "North": return { ...r, y: r.y + 1 };
-        case "South": return { ...r, y: r.y - 1 };
-        case "East": return { ...r, x: r.x + 1 };
-        case "West": return { ...r, x: r.x - 1 };
-    }
-};
-
-const moveBackward: Func<Rover, Rover> = (r) => {
-    switch (r.direction) {
-        case "North": return { ...r, y: r.y - 1 };
-        case "South": return { ...r, y: r.y + 1 };
-        case "East": return { ...r, x: r.x - 1 };
-        case "West": return { ...r, x: r.x + 1 };
-    }
-};
-
-const doNothing: Func<Rover, Rover> = (r) => r;
+import { Rover} from "./models";
+import { compose } from "./functional";
+import { commandToAction, Command } from "./commands";
 
 const stringToCommand = (s: string): Command => {
     switch (s.toLowerCase()) {
@@ -72,17 +16,6 @@ const stringToCommand = (s: string): Command => {
         case "r": return "TurnRight";
         case "q": return "Quit";
         default: return "Unknown";
-    }
-};
-
-const commandToAction = (c: Command): Func<Rover, Rover> => {
-    switch (c) {
-        case "MoveBackward": return moveBackward;
-        case "MoveForward": return moveForward;
-        case "TurnLeft": return turnLeft;
-        case "TurnRight": return turnRight;
-        case "Quit": return doNothing;
-        case "Unknown": return doNothing;
     }
 };
 
