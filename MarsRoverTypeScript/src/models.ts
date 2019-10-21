@@ -3,7 +3,6 @@ type Direction = "North"
     | "East"
     | "West";
 
-
 interface Rover {
     readonly x: number;
     readonly y: number;

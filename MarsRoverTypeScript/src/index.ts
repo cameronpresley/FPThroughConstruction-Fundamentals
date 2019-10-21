@@ -4,9 +4,9 @@ const readline = createInterface({
     output: process.stdout,
 });
 
-import { Rover} from "./models";
+import { Command, commandToAction } from "./commands";
 import { compose } from "./functional";
-import { commandToAction, Command } from "./commands";
+import { Rover} from "./models";
 
 const stringToCommand = (s: string): Command => {
     switch (s.toLowerCase()) {
@@ -21,8 +21,6 @@ const stringToCommand = (s: string): Command => {
 
 let command: Command;
 
-let rover: Rover = { x: 0, y: 0, direction: "North" };
-
 const displayPrompt = (r: Rover) => {
     console.log(r);
     console.log("What command to run?");
@@ -34,6 +32,7 @@ console.log("1). Interactive (default)");
 console.log("2). String of Commands (no intermediate steps shown)");
 readline.prompt();
 readline.on("line", (line: string) => {
+    const rover: Rover = { x: 0, y: 0, direction: "North" };
     if (!line || line === "1") {
         runInteractive(rover);
     } else {
