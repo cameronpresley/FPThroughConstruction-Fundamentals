@@ -6,7 +6,7 @@ const readline = createInterface({
 
 import { Command, commandToAction } from "./commands";
 import { compose } from "./functional";
-import { Rover} from "./models";
+import { Rover } from "./models";
 
 const stringToCommand = (s: string): Command => {
     switch (s.toLowerCase()) {
@@ -41,15 +41,15 @@ readline.on("line", (line: string) => {
 });
 
 const runInteractive = (r: Rover) => {
-    displayPrompt(rover);
+    displayPrompt(r);
     readline.prompt();
     readline.on("line", (line: string) => {
         command = stringToCommand(line);
-        rover = commandToAction(command)(rover);
+        r = commandToAction(command)(r);
         if (command === "Quit") {
             readline.close();
         } else {
-            displayPrompt(rover);
+            displayPrompt(r);
             readline.prompt();
         }
     }).on("close", () => {

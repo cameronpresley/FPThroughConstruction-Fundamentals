@@ -38,3 +38,4 @@ msbuild.wrn
 
 # Node Modules
 [Nn]ode_modules/
+.ionide/symbolCache.db
