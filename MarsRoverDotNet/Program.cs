@@ -6,8 +6,8 @@ namespace MarsRoverDotNet
     class Program
     {
         static void Main(string[] args)
-        {
-            var rover = new Rover(0, 0, Direction.North);
+        {            
+            var rover = new Rover{X=0,Y=0, Direction=Direction.North};
             Console.WriteLine("How do you want to run the simulator?");
             System.Console.WriteLine("1). Interactive (default)");
             System.Console.WriteLine("2). String of Commands (no intermediate steps shown)");

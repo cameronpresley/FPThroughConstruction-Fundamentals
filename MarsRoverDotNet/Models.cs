@@ -12,17 +12,10 @@ namespace MarsRoverDotNet
         North, South, East, West,
     }
 
-    public class Rover
+    public record Rover
     {
-        public int X { get; }
-        public int Y { get; }
-        public Direction Direction { get; }
-
-        public Rover(int x, int y, Direction direction)
-        {
-            X = x;
-            Y = y;
-            Direction = direction;
-        }
+        public int X {get;init;}
+        public int Y {get; init;}
+        public Direction Direction {get; init;}
     }
 }
